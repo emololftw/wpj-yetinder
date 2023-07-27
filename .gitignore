@@ -26,3 +26,8 @@
 ###> IDE ###
 /.idea
 ###< IDE ###
+
+###> Locking files ###
+/symfony.lock
+/composer.lock
+###< Locking files ###
