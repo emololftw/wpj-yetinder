@@ -33,7 +33,7 @@ Základní grafický přehled výsledků. Pro datové řady bylo využito agrega
 ![Analytika](/.docs/analysis.png)
 
 ###### Schéma databáze
-![DB](/.docs/db.png)
+![db](/.docs/db_scheme.png)
 
 ### Docker-compose
 ```bash
