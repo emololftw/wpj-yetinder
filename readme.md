@@ -1,6 +1,7 @@
 # YETINDER
 
 Zadání úkolu pro jako backend developer pro firmu [WPJ]
+Dump databáze je obsažev ve složce migrations. Dummy data jsou generována pomocí ChatGPT (3.5)
 
 ### Použité nástroje
 - PhpStorm
