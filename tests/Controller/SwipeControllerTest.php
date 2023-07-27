@@ -45,5 +45,13 @@ class SwipeControllerTest extends WebTestCase
 				$this->assertSame('PREMIUM KLIENT', $crawler->filter('span.premium-badge')->text());
 			},
 		];
+
+		yield [
+			'request' => 'swipe/nothing',
+			'asserts' => function (Crawler $crawler) {
+				$this->assertResponseIsSuccessful();
+				$this->assertSelectorTextContains('div', ':(');
+			},
+		];
 	}
 }
