@@ -1,0 +1,66 @@
+{extends '@layout.latte'}
+
+{varType App\Model\AnalysisDataService $analysisData}
+
+{block title}
+    <a href="/" class="flex gap-x-2 font-bold mb-3 text-blue-700 text-base">
+        <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.25 6.75L4.75 12L10.25 17.25"></path>
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.25 12H5"></path>
+        </svg>
+        Zpět na hlavní stránku
+    </a>
+    Analytika
+{/block}
+
+{block rightSide}
+    {$daysForm->render()}
+{/block}
+
+{define #buildChart, $title, $data, $colors}
+<div
+        class="chart border rounded-[1.4rem] p-5 pb-0"
+        x-data="{
+            init() {
+                const chart = new ApexCharts(this.$refs.chart, {
+                    series: [
+                    {foreach $data as $dataTitle => $dataset}
+                        {
+                            name: '{$dataTitle}',
+                            data: [{$dataset}]
+                        },
+                    {/foreach}
+                    ],
+                    title: {
+                        text: '{$title}'
+                    },
+                    chart: {
+                        fontFamily: 'Roboto Mono',
+                        height: 230,
+                        type: 'bar',
+                        {if count($data) > 1}
+                        stacked: true
+                        {/if}
+                    },
+                    legend: {
+                        position: 'top'
+                    },
+                    colors: [{foreach $colors as $color}'{$color}',{/foreach}],
+                    xaxis: {
+                        categories: [{$analysisData->toDates()}],
+                    }
+                })
+                chart.render()
+            }
+        }"
+>
+    <div x-ref="chart"></div>
+</div>
+{/define}
+
+{block content}
+<div class="flex flex-col gap-y-4">
+{include buildChart, 'Počet registrací', ['Počet registrací' => ($analysisData->buildRegistrationDataStack()|implode:',')], ['#000000']}
+{include buildChart, 'Počet registrací dle pohlaví', ['Ženy' => ($analysisData->buildRegistrationDataStack(0)|implode:','), 'Muži' => ($analysisData->buildRegistrationDataStack(1)|implode:',')], ['#721817', '#2B4162']}
+{include buildChart, 'Počet hodnocení', ['Počet hodnocení' => ($analysisData->buildRatingsDataStack('totalRatings')|implode:',')], ['#2B4162']}
+</div>

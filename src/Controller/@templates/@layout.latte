@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YETINDER{ifset title} - {include title|stripHtml|spaceless}{/ifset}</title>
+    {* Webpack integration is possible? I choosen CDN for first example *}
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        midnight: 'hsl(222.2deg, 47.4%, 11.2%)', {* I LIKE THIS COLOR AS PRIMARY *}
+                    }
+                }
+            }
+        }
+    </script>
+    {block styles}
+        <style type="text/tailwindcss">
+            @layer utilities {
+                .form-control {
+                    @apply
+                    block w-full py-2 px-2.5
+                    border border-gray-300
+                    text-gray-900 text-sm rounded-lg
+                    focus:outline outline-offset-2 outline-2
+                    dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:outline-blue-500
+                }
+
+                .invalid-form-control-message {
+                    @apply text-sm my-1 text-rose-600 font-medium text-start;
+                }
+
+                .form-label {
+                    @apply block mb-0.5 font-medium text-gray-900
+                    dark:text-white
+                }
+                .btn {
+                    @apply px-3 h-[38px] flex items-center justify-center rounded-md font-medium cursor-pointer;
+                }
+
+                .error-container {
+                    @apply p-4 w-full mb-9 rounded text-center flex flex-col
+                }
+            }
+        </style>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@200;300;400&display=swap" rel="stylesheet">
+    {/block}
+</head>
+<body>
+    <div id="app" x-data="{block alpinejs}{/block}">
+        {block body}
+            <div class="max-w-6xl mx-auto">
+                {include #titleContainer}
+                {include content}
+            </div>
+        {/block}
+    </div>
+</body>
+</html>
+
+{define #titleContainer}
+    <div class="flex justify-between items-center mt-4 mb-6">
+        <div class="text-3xl font-bold" n:inner-block=title></div>
+        {block rightSide}{/block}
+    </div>
+{/define}

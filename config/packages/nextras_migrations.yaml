@@ -1,0 +1,5 @@
+nextras_migrations:
+  dir: '%kernel.project_dir%/migrations'
+  driver: mysql
+  dbal: doctrine
+  with_dummy_data: '%kernel.debug%'

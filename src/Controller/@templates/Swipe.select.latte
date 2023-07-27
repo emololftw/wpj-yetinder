@@ -1,0 +1,21 @@
+{extends '@layoutModal.latte'}
+
+{block title}
+    Musíme Vás poznat!
+{/block}
+
+{block rightSide}
+{/block}
+
+{block alpinejs}
+{
+    diceValue: 1,
+    rollTheDice() {
+    console.log("hee"),
+        this.diceValue = Math.floor(Math.random()*6) + 1
+    }
+}
+{/block}
+
+{block content}
+{$customisationForm->render()}

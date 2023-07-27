@@ -1,0 +1,82 @@
+{extends '@layout.latte'}
+
+{block title}
+    Top 10 Yetyů
+{/block}
+
+{block rightSide}
+    <div class="flex gap-2">
+        <a href="{$addYetiLink}" type="button" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+            Přidat <strong>YETIHO</strong>
+        </a>
+        <a href="{$swipeLink}" type="button" class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+            Začít se seznamovat!
+        </a>
+
+        <a href="{$analysisLink}" type="button" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+            Analytika
+        </a>
+    </div>
+{/block}
+
+{block content}
+<img src="/assets/yeti_hero.svg" class="absolute z-0 h-[700px] w-auto -top-[100px] opacity-20 pointer-events-none">
+<div class="relative overflow-x-auto shadow-sm border sm:rounded-lg bg-white mt-24">
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
+        <tr>
+            <th scope="col" class="px-6 py-3">
+                Pozice
+            </th>
+            <th scope="col" class="px-6 py-3">
+                Jméno
+            </th>
+            <th scope="col" class="px-6 py-3">
+                Výška
+            </th>
+            <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+                Váha
+            </th>
+            <th scope="col" class="px-6 py-3">
+                Adresa
+            </th>
+            <th scope="col" class="px-6 py-3">
+                Datum narození
+            </th>
+            <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+                Hodnocení
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $yetis as $yeti}
+            <tr class="border-b border-gray-200 dark:border-gray-700">
+                <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
+                    {$iterator->counter}
+                </th>
+                <td class="px-6 py-4">
+                    {$yeti[nickname]}
+                </td>
+                <td class="px-6 py-4">
+                    {$yeti[height]} cm
+                </td>
+                <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+                    {$yeti[weight]} kg
+                </td>
+                <td class="px-6 py-4">
+                    {$yeti[address]}
+                </td>
+                <td class="px-6 py-4">
+                    {$yeti[born_at]|date:"d. m. Y"}
+                </td>
+                <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800 font-bold">
+                    <span >
+                        {$yeti[rate]}
+                    </span>
+
+                </td>
+            </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</div>

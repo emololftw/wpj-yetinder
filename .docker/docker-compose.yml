@@ -1,0 +1,52 @@
+version: '3.7'
+services:
+  db:
+    image: mysql:latest
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: wpj
+    ports:
+      - "8890:3306"
+    volumes:
+      - mysql_db_container_data:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
+
+  www:
+    image: nginx:latest
+    restart: on-failure
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./../:/var/www/html
+      - ./nginx.conf:/etc/nginx/conf.d/site.conf
+    links:
+      - php
+
+  adminer_container:
+    image: adminer:latest
+    volumes:
+      - ./adminer/plugins:/var/www/html/plugins-enabled/plugins
+      - ./adminer/theme/adminer.css:/var/www/html/adminer.css
+    environment:
+      ADMINER_DEFAULT_SERVER: mysql_db_container
+    ports:
+      - "8889:8080"
+
+  php:
+    image: php:8.2.7-fpm
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      APPLICATION_DEV: 'development'
+      PHP_IDE_CONFIG: "serverName=localhost:8888"
+      XDEBUG_CONFIG: "idekey=PHPSTORM"
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    volumes:
+      - ./../:/var/www/html
+      - ./php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+
+volumes:
+  mysql_db_container_data:

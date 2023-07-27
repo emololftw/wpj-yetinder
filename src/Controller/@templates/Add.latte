@@ -1,0 +1,14 @@
+{extends '@layoutModal.latte'}
+
+{block title}
+    Přidat nového Yetiho!
+{/block}
+
+{block rightSide}
+{/block}
+
+{block content}
+{if $isFormSuccess}
+    <div class="error-container text-green-700 bg-green-100">Yeti byl/a úspěšně přidáno!</div>
+{/if}
+{$form->render()}

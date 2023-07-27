@@ -1,0 +1,69 @@
+{extends '@layoutModal.latte'}
+
+{block title}
+    YetiSwap!
+    {if $priority}
+        <span class="premium-badge inline-flex gap-x-2 items-center text-blue-800 bg-blue-100 text-sm font-medium mr-2 px-2.5 py-0.5 rounded">
+            <svg class="w-4 h-4" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6.75 16.75L4.75 6.75L9 9.25L12 4.75L15 9.25L19.25 6.75L17.25 16.75H6.75Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M17.25 16.75H6.75C5.64543 16.75 4.75 17.6454 4.75 18.75V19.25H19.25V18.75C19.25 17.6454 18.3546 16.75 17.25 16.75Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            PREMIUM KLIENT
+        </span>
+
+    {/if}
+{/block}
+
+{block rightSide}
+    {* Empty block *}
+{/block}
+
+{block wrapperClass}
+    {if $priority} bg-yellow-200{/if}
+{/block}
+
+{define #previewItem, $title, $value}
+    <div class="bg-gray-200/70 p-2.5 rounded-[1rem] flex flex-col px-5">
+        <div class="font-medium text-gray-700">
+            {$title}
+        </div>
+        <div class="font-semibold text-lg mt-1.5">
+            {var $v = $result[$value]}
+            {switch $value}
+                {case 'gender'}{if $v === 0} Yetačka {else} Yeťák {/if}
+                {case 'born_at'}{$v|date:\App\Model\UI\Formatter::CzechDateFormat}
+                {default}{$v}
+            {/switch}
+        </div>
+    </div>
+{/define}
+
+{block content}
+<div class="flex gap-x-14 items-center mb-10 justify-center">
+    <a href="{$linkForCons}" type="button" class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+        <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18.25 12.25L5.75 12.25"></path>
+        </svg>
+    </a>
+    <div class="text-[3rem] font-bold"> {$result[rate]} </div>
+    <a href="{$linkForPros}" type="button" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+        <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 5.75V18.25"></path>
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18.25 12L5.75 12"></path>
+        </svg>
+    </a>
+</div>
+
+<div class="flex flex-col gap-y-4">
+    {foreach [
+        'Jméno' => 'nickname',
+        'Narození' => 'born_at',
+        'Výška' => 'height',
+        'Váha' => 'weight',
+        'Lokalita' => 'address',
+        'Pohlaví' => 'gender',
+        'Kolik měl/a na kostce?' => 'roll_dice'
+    ] as $title => $value}
+        {include #previewItem, $title, $value}
+    {/foreach}
+</div>
