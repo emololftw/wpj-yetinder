@@ -4,29 +4,46 @@ declare(strict_types=1);
 
 namespace Controller;
 
+use Generator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\DomCrawler\Crawler;
 
 class SwipeControllerTest extends WebTestCase
 {
-	public function testRender(): void
+	/**
+	 * @dataProvider provideControllers
+	 */
+	public function testControllers(string $request, callable $asserts): void
 	{
 		$client = static::createClient();
-		$crawler = $client->request('GET', '/swipe');
-		$this->assertResponseRedirects('swipe/select');
+		$crawler = $client->request('GET', $request);
+		$asserts($crawler);
 	}
 
-	public function testRenderWithParameters(): void
+	public function provideControllers(): Generator
 	{
-		$client = static::createClient();
-		$client->request('GET', 'swipe/1');
-		$this->assertSelectorTextContains('div', 'Jarin');
-		$this->assertSelectorTextContains('div', 'U Sněžky 11');
-	}
+		yield [
+			'request' => 'swipe',
+			'asserts' => function (Crawler $crawler) {
+				$this->assertResponseRedirects('swipe/select');
+			},
+		];
 
-	public function testRenderPremium(): void
-	{
-		$client = static::createClient();
-		$crawler = $client->request('GET', 'swipe/1/1');
-		$this->assertSame('PREMIUM KLIENT', $crawler->filter('span.premium-badge')->text());
+		yield [
+			'request' => 'swipe/1',
+			'asserts' => function (Crawler $crawler) {
+				$this->assertResponseIsSuccessful();
+				$this->assertSelectorTextContains('div', 'Jarin');
+				$this->assertSelectorTextContains('div', 'U Sněžky 11');
+			},
+		];
+
+		yield [
+			'request' => 'swipe/1/1',
+			'asserts' => function (Crawler $crawler) {
+				$this->assertResponseIsSuccessful();
+				$this->assertSame('PREMIUM KLIENT', $crawler->filter('span.premium-badge')->text());
+			},
+		];
 	}
 }

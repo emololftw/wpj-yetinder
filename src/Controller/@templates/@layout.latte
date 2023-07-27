@@ -67,7 +67,7 @@
 
 {define #titleContainer}
     <div class="flex justify-between items-center mt-4 mb-6">
-        <div class="text-3xl font-bold" n:inner-block=title></div>
+        <div class="text-3xl font-bold">{block title|spaceless}{/block}</div>
         {block rightSide}{/block}
     </div>
 {/define}
